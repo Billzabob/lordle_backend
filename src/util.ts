@@ -28,6 +28,7 @@ enum CardType {
   Spell,
   Trap,
   Unit,
+  Equipment
 }
 
 export interface Card {
@@ -40,7 +41,7 @@ export interface Card {
 }
 
 export async function allCards() {
-  const sets = ['set1', 'set2', 'set3', 'set4', 'set5', 'set6']
+  const sets = ['set1', 'set2', 'set3', 'set4', 'set5', 'set6', 'set6cde']
   const allCards = sets.map(set => got(`https://dd.b.pvp.net/latest/${set}/en_us/data/${set}-en_us.json`).json())
   return (await Promise.all(allCards)).flat() as [Card]
 }

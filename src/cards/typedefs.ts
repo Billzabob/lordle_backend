@@ -7,6 +7,7 @@ export default gql`
     Spell
     Trap
     Unit
+    Equipment
   }
 
   enum Rarity {
