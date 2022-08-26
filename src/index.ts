@@ -1,7 +1,7 @@
 import { ApolloServer, gql } from 'apollo-server';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import resolvers from './resolvers.js';
-import typeDefs from './typeDefs.js';
+import typeDefs from './typedefs.js';
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
