@@ -35,6 +35,24 @@ export default gql`
   enum Expansion {
     Foundations
     RisingTides
+    CallOfTheMountain
+    MonumentsOfPower
+    KDAAllOut
+    CosmicCreation
+    Aphelios
+    EmpiresOfTheAscended
+    GuardiansOfTheAncient
+    RiseOfTheUnderworlds
+    SentinelsOfLight
+    BeyondTheBandlewood
+    ThePathOfChampions
+    MagicMisadventures
+    ACuriousJourney
+    v34CardExpansion
+    v36CardExpansion
+    Worldwalker
+    ForcesFromBeyond
+    TheDarkinSagaAwakening
   }
 
   type Card {

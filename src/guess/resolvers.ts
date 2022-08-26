@@ -1,4 +1,4 @@
-import { allCards, Card } from '../util.js'
+import { allCards, calculateExpansion, Card } from '../util.js'
 import shuffleSeed from 'shuffle-seed'
 
 async function guess(code: string) {
@@ -27,7 +27,7 @@ async function guess(code: string) {
         result: guess.type === card.type ? 'CORRECT' : 'WRONG',
       },
       expansionResult: {
-        expansion: 'Foundations',
+        expansion: calculateExpansion(guess.cardCode),
         result: 'CORRECT',
       }
     }
