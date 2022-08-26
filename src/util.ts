@@ -73,16 +73,6 @@ enum Expansion {
   TheDarkinSagaAwakening = 'TheDarkinSagaAwakening',
 }
 
-enum Set {
-  Set1 = 'Set1',
-  Set2 = 'Set2',
-  Set3 = 'Set3',
-  Set4 = 'Set4',
-  Set5 = 'Set5',
-  Set6 = 'Set6',
-  Set6cde = 'Set6cde'
-}
-
 export type Card = {
   cost: number,
   cardCode: string
@@ -93,13 +83,23 @@ export type Card = {
   set: Set
 }
 
-const allSets = Object.values(Set).map(set => set.toLowerCase())
-
 type ExpansionInfo = {
   expansion: Expansion,
   set: Set,
   patch: string
 }
+
+enum Set {
+  Set1 = 'Set1',
+  Set2 = 'Set2',
+  Set3 = 'Set3',
+  Set4 = 'Set4',
+  Set5 = 'Set5',
+  Set6 = 'Set6',
+  Set6cde = 'Set6cde'
+}
+
+const allSets = Object.values(Set).map(set => set.toLowerCase())
 
 const expansionPatch: ExpansionInfo[] = [
   {
