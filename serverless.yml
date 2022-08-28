@@ -1,0 +1,20 @@
+service: lordle
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-west-1
+functions:
+  graphql:
+    handler: src/apollo-server.graphqlHandler
+    events:
+      - http:
+          path: graphql
+          method: post
+          cors: true
+      - http:
+          path: graphql
+          method: get
+          cors: true
+plugins:
+  - serverless-bundle
+  - serverless-offline

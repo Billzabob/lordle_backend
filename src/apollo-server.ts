@@ -1,9 +1,9 @@
-import { ApolloServer, gql } from 'apollo-server';
+import { ApolloServer, gql } from 'apollo-server-lambda';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import cardResolver from './cards/resolvers.js';
-import cardTypeDefs from './cards/typedefs.js';
-import guessResolver from './guess/resolvers.js';
-import guessTypeDefs from './guess/typedefs.js';
+import cardResolver from './cards/resolvers';
+import cardTypeDefs from './cards/type-defs';
+import guessResolver from './guess/resolvers';
+import guessTypeDefs from './guess/type-defs';
 
 const query = gql`type Query`
 
@@ -19,7 +19,4 @@ const server = new ApolloServer({
   ],
 });
 
-// The `listen` method launches a web server.
-server.listen(process.env.PORT || 8081).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+export const graphqlHandler = server.createHandler()

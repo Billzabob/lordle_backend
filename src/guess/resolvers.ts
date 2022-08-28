@@ -1,4 +1,4 @@
-import { allCards, calculateExpansion, Card } from '../util.js'
+import { allCards, calculateExpansion, Card } from '../util'
 import shuffleSeed from 'shuffle-seed'
 
 async function guess(code: string) {

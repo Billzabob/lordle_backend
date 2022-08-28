@@ -5,7 +5,7 @@ export async function allCards(patch = 'latest', sets = allSets) {
   return (await Promise.all(allCards)).flat() as [Card]
 }
 
-export async function calculateExpansion(cardCode: String) {
+export async function calculateExpansion(cardCode: string) {
   const cards = await allCards()
   const card = cards.find(card => card.cardCode === cardCode)
 

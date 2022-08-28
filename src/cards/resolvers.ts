@@ -1,4 +1,4 @@
-import { allCards } from '../util.js'
+import { allCards } from '../util'
 
 export default {
   Query: {
