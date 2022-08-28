@@ -29,27 +29,14 @@ export default gql`
     Targon
   }
 
-  enum Expansion {
-    Foundations
-    RisingTides
-    CallOfTheMountain
-    MonumentsOfPower
-    KDAAllOut
-    CosmicCreation
-    Aphelios
-    EmpiresOfTheAscended
-    GuardiansOfTheAncient
-    RiseOfTheUnderworlds
-    SentinelsOfLight
-    BeyondTheBandlewood
-    ThePathOfChampions
-    MagicMisadventures
-    ACuriousJourney
-    v34CardExpansion
-    v36CardExpansion
-    Worldwalker
-    ForcesFromBeyond
-    TheDarkinSagaAwakening
+  enum Set {
+    Set1
+    Set2
+    Set3
+    Set4
+    Set5
+    Set6
+    Set6cde
   }
 
   type Card {

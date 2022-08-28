@@ -27,8 +27,8 @@ export default gql`
     result: Result
   }
 
-  type ExpansionResult {
-    expansion: Expansion
+  type SetResult {
+    set: Set
     result: Result
   }
 
@@ -37,7 +37,7 @@ export default gql`
     rarityResult: RarityResult
     manaCostResult: ManaCostResult
     typeResult: CardTypeResult
-    expansionResult: ExpansionResult
+    setResult: SetResult
   }
 
   # The "Query" type is special: it lists all of the available queries that

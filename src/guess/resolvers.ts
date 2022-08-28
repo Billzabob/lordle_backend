@@ -1,4 +1,4 @@
-import { allCards, calculateExpansion, Card } from '../util'
+import { allCards, Card } from '../util'
 import shuffleSeed from 'shuffle-seed'
 
 async function guess(code: string) {
@@ -9,9 +9,6 @@ async function guess(code: string) {
   const card = chooseRandomCard(new Date(), cards)
 
   if (guess && card) {
-    const cardExpansion = await calculateExpansion(card.cardCode)
-    const guessExpansion = await calculateExpansion(guess.cardCode)
-
     return {
       regionResult: {
         regions: guess.regionRefs,
@@ -29,9 +26,9 @@ async function guess(code: string) {
         type: guess.type,
         result: guess.type === card.type ? 'CORRECT' : 'WRONG',
       },
-      expansionResult: {
-        expansion: guessExpansion,
-        result: cardExpansion === guessExpansion ? 'CORRECT' : 'WRONG',
+      setResult: {
+        set: guess.set,
+        result: guess.set === card.set ? 'CORRECT' : 'WRONG',
       }
     }
   } else {
