@@ -9,6 +9,9 @@ async function guess(code: string) {
   const card = chooseRandomCard(new Date(), cards)
 
   if (guess && card) {
+    const cardExpansion = await calculateExpansion(card.cardCode)
+    const guessExpansion = await calculateExpansion(guess.cardCode)
+
     return {
       regionResult: {
         regions: guess.regionRefs,
@@ -27,8 +30,8 @@ async function guess(code: string) {
         result: guess.type === card.type ? 'CORRECT' : 'WRONG',
       },
       expansionResult: {
-        expansion: calculateExpansion(guess.cardCode),
-        result: 'CORRECT',
+        expansion: guessExpansion,
+        result: cardExpansion === guessExpansion ? 'CORRECT' : 'WRONG',
       }
     }
   } else {
@@ -37,9 +40,9 @@ async function guess(code: string) {
 }
 
 function chooseRandomCard(date: Date, cards: [Card]) {
-  const startDate = new Date('8/26/2022');
-  const diffTime = Math.abs(date.getTime() - startDate.getTime());
-  const day = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  const startDate = new Date('8/26/2022')
+  const diffTime = Math.abs(date.getTime() - startDate.getTime())
+  const day = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
   return shuffleSeed.shuffle(cards, "super_cool_seed")[day]
 }
@@ -66,6 +69,10 @@ export default {
   Query: {
     guess(_parent: undefined, args: GuessArgs) {
       return guess(args.code)
+    },
+    async answer() {
+      const cards = await allCards()
+      return chooseRandomCard(new Date(), cards)
     }
   },
-};
+}

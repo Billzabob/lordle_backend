@@ -1,9 +1,9 @@
-import { ApolloServer, gql } from 'apollo-server-lambda';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import cardResolver from './cards/resolvers';
-import cardTypeDefs from './cards/type-defs';
-import guessResolver from './guess/resolvers';
-import guessTypeDefs from './guess/type-defs';
+import { ApolloServer, gql } from 'apollo-server-lambda'
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+import cardResolver from './cards/resolvers'
+import cardTypeDefs from './cards/type-defs'
+import guessResolver from './guess/resolvers'
+import guessTypeDefs from './guess/type-defs'
 
 const query = gql`type Query`
 
@@ -17,6 +17,6 @@ const server = new ApolloServer({
   plugins: [
     ApolloServerPluginLandingPageLocalDefault({ embed: true }),
   ],
-});
+})
 
 export const graphqlHandler = server.createHandler()

@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-lambda';
+import { gql } from 'apollo-server-lambda'
 
 export default gql`
   enum CardType {
@@ -66,4 +66,4 @@ export default gql`
   extend type Query {
     cards: [Card]
   }
-`;
+`

@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-lambda';
+import { gql } from 'apollo-server-lambda'
 
 export default gql`
   enum Result {
@@ -45,5 +45,6 @@ export default gql`
   # case, the "books" query returns an array of zero or more Books (defined above).
   extend type Query {
     guess(code: String!): Guess
+    answer: Card
   }
-`;
+`
