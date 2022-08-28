@@ -39,7 +39,7 @@ async function guess(code: string) {
   }
 }
 
-function chooseRandomCard(date: Date, cards: [Card]) {
+function chooseRandomCard(date: Date, cards: Card[]) {
   const startDate = new Date('8/26/2022')
   const diffTime = Math.abs(date.getTime() - startDate.getTime())
   const day = Math.ceil(diffTime / (1000 * 60 * 60 * 24))

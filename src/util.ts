@@ -2,7 +2,8 @@ import got from 'got'
 
 export async function allCards(patch = 'latest', sets = allSets) {
   const allCards = sets.map(set => got(`https://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
-  return (await Promise.all(allCards)).flat() as [Card]
+  const cards = (await Promise.all(allCards)).flat() as [Card]
+  return cards.filter(c => c.collectible)
 }
 
 export async function calculateExpansion(cardCode: string) {
@@ -34,7 +35,6 @@ enum Region {
 }
 
 enum Rarity {
-  None,
   Champion,
   COMMON,
   EPIC,
@@ -42,10 +42,8 @@ enum Rarity {
 }
 
 enum CardType {
-  Ability,
   Landmark,
   Spell,
-  Trap,
   Unit,
   Equipment,
 }
@@ -80,7 +78,8 @@ export type Card = {
   regionRefs: [Region]
   rarity: Rarity
   type: CardType,
-  set: Set
+  set: Set,
+  collectible: boolean
 }
 
 type ExpansionInfo = {

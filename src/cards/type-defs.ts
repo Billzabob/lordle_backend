@@ -2,16 +2,13 @@ import { gql } from 'apollo-server-lambda'
 
 export default gql`
   enum CardType {
-    Ability
     Landmark
     Spell
-    Trap
     Unit
     Equipment
   }
 
   enum Rarity {
-    None
     Champion
     COMMON
     EPIC
