@@ -38,6 +38,7 @@ export default gql`
     manaCostResult: ManaCostResult
     typeResult: CardTypeResult
     setResult: SetResult
+    correct: Boolean
   }
 
   # The "Query" type is special: it lists all of the available queries that
@@ -45,6 +46,5 @@ export default gql`
   # case, the "books" query returns an array of zero or more Books (defined above).
   extend type Query {
     guess(code: String!): Guess
-    answer: Card
   }
 `

@@ -10,6 +10,7 @@ async function guess(code: string) {
 
   if (guess && card) {
     return {
+      correct: guess.cardCode === card.cardCode,
       regionResult: {
         regions: guess.regionRefs,
         result: compareRegions(guess, card)
@@ -66,10 +67,6 @@ export default {
   Query: {
     guess(_parent: undefined, args: GuessArgs) {
       return guess(args.code)
-    },
-    async answer() {
-      const cards = await allCards()
-      return chooseRandomCard(new Date(), cards)
     }
   },
 }
