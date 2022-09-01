@@ -50,5 +50,6 @@ export default gql`
 
   extend type Query {
     cards: [Card!]!
+    card(daysBack: Int!): Card
   }
 `
