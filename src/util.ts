@@ -1,7 +1,7 @@
 import got from 'got'
 
 export async function allCards(patch = 'latest', sets = allSets) {
-  const allCards = sets.map(set => got(`https://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
+  const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
   const cards = (await Promise.all(allCards)).flat() as [Card]
   return cards.filter(c => c.collectible)
 }
@@ -34,15 +34,21 @@ enum CardType {
   Equipment,
 }
 
+type Asset = {
+  gameAbsolutePath: string
+  fullAbsolutePath: string
+}
+
 export type Card = {
   cost: number,
   cardCode: string
   name: string
-  regionRefs: [Region]
+  regionRefs: Region[]
   rarity: Rarity
-  type: CardType,
-  set: Set,
+  type: CardType
+  set: Set
   collectible: boolean
+  assets: Asset[]
 }
 
 enum Set {

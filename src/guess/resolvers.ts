@@ -10,6 +10,7 @@ async function guess(code: string) {
 
   if (guess && card) {
     return {
+      image: guess.assets[0].gameAbsolutePath,
       correct: guess.cardCode === card.cardCode,
       regionResult: {
         regions: guess.regionRefs,
@@ -55,7 +56,7 @@ function compareRegions(guess: Card, card: Card) {
   }
 }
 
-function compareLists<A>(list1: [A], list2: [A]) {
+function compareLists<A>(list1: A[], list2: A[]) {
   return list1.length === list2.length && list1.sort().every((r, i) => r == list2.sort()[i])
 }
 

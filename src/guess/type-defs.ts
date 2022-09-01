@@ -33,12 +33,13 @@ export default gql`
   }
 
   type Guess {
-    regionResult: RegionResult
-    rarityResult: RarityResult
-    manaCostResult: ManaCostResult
-    typeResult: CardTypeResult
-    setResult: SetResult
-    correct: Boolean
+    regionResult: RegionResult!
+    rarityResult: RarityResult!
+    manaCostResult: ManaCostResult!
+    typeResult: CardTypeResult!
+    setResult: SetResult!
+    correct: Boolean!
+    image: String!
   }
 
   # The "Query" type is special: it lists all of the available queries that
