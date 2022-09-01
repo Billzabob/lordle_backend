@@ -1,15 +1,11 @@
-import { allCards, Card } from '../util'
-import shuffleSeed from 'shuffle-seed'
+import { allCards, Card, getCardForDay } from '../util'
 
 async function guess(code: string) {
   const cards = await allCards()
 
   const guess = cards.find(card => card.cardCode === code)
 
-  const time = new Date()
-  // Adjust the time so that new cards are released around midnight in the US
-  const adjustedTime = new Date(time.setTime(time.getTime() - (7 * 60 * 60 * 1000)))
-  const card = chooseRandomCard(adjustedTime, cards)
+  const card = getCardForDay(new Date(), cards)
 
   if (guess && card) {
     return {
@@ -39,14 +35,6 @@ async function guess(code: string) {
   } else {
     throw 'Card code does not exist'
   }
-}
-
-function chooseRandomCard(date: Date, cards: Card[]) {
-  const startDate = new Date('8/26/2022')
-  const diffTime = Math.abs(date.getTime() - startDate.getTime())
-  const day = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-  return shuffleSeed.shuffle(cards, "super_cool_seed")[day]
 }
 
 function compareRegions(guess: Card, card: Card) {
