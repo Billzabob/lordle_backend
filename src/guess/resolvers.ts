@@ -25,7 +25,7 @@ async function guess(code: string) {
       },
       manaCostResult: {
         manaCost: guess.cost,
-        result: guess.cost === card.cost ? 'CORRECT' : 'WRONG',
+        result: guess.cost > card.cost ? 'DOWN' : (guess.cost < card.cost ? 'UP' : 'CORRECT'),
       },
       typeResult: {
         type: guess.type,

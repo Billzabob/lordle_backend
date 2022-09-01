@@ -4,12 +4,23 @@ export default gql`
   enum Result {
     CORRECT
     WRONG
+  }
+
+  enum ResultPartial {
+    CORRECT
+    WRONG
     PARTIAL
+  }
+
+  enum ResultUpDown {
+    CORRECT
+    UP
+    DOWN
   }
 
   type RegionResult {
     regions: [Region]
-    result: Result
+    result: ResultPartial
   }
 
   type RarityResult {
@@ -19,7 +30,7 @@ export default gql`
 
   type ManaCostResult {
     manaCost: Int
-    result: Result
+    result: ResultUpDown
   }
 
   type CardTypeResult {
