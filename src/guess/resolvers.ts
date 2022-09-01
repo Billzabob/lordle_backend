@@ -6,7 +6,10 @@ async function guess(code: string) {
 
   const guess = cards.find(card => card.cardCode === code)
 
-  const card = chooseRandomCard(new Date(), cards)
+  const time = new Date()
+  // Adjust the time so that new cards are released around midnight in the US
+  const adjustedTime = new Date(time.setTime(time.getTime() - (7 * 60 * 60 * 1000)))
+  const card = chooseRandomCard(adjustedTime, cards)
 
   if (guess && card) {
     return {

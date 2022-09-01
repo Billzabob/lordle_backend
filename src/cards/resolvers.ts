@@ -5,7 +5,7 @@ export default {
     async cards() {
       const cards = await allCards()
       return cards.map(card => {
-        return {...card, image: card.assets[0].gameAbsolutePath}
+        return { ...card, image: card.assets[0].gameAbsolutePath }
       })
     }
   },
