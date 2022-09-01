@@ -40,14 +40,15 @@ export default gql`
   }
 
   type Card {
-    cardCode: String
-    name: String
-    regionRefs: [Region]
-    rarity: Rarity
-    type: CardType
+    cardCode: String!
+    name: String!
+    regionRefs: [Region!]!
+    rarity: Rarity!
+    type: CardType!,
+    image: String!
   }
 
   extend type Query {
-    cards: [Card]
+    cards: [Card!]!
   }
 `

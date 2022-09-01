@@ -2,7 +2,7 @@ import got from 'got'
 
 export async function allCards(patch = 'latest', sets = allSets) {
   const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
-  const cards = (await Promise.all(allCards)).flat() as [Card]
+  const cards = (await Promise.all(allCards)).flat() as Card[]
   return cards.filter(c => c.collectible)
 }
 
