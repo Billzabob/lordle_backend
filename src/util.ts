@@ -1,5 +1,6 @@
 import got from 'got'
 import shuffleSeed from 'shuffle-seed'
+import dayjs  from 'dayjs'
 
 export async function allCards(patch = 'latest', sets = allSets) {
   const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
@@ -7,14 +8,13 @@ export async function allCards(patch = 'latest', sets = allSets) {
   return cards.filter(c => c.collectible)
 }
 
-export function getCardForDay(date: Date, cards: Card[], daysBack = 0) {
+export function getCardForDay(cards: Card[], daysBack = 0) {
   // Adjust the time so that new cards are released around midnight in the US
-  const adjustedTime = new Date(date.setTime(date.getTime() - (7 * 60 * 60 * 1000)))
-  const startDate = new Date('8/26/2022')
-  const diffTime = Math.abs(adjustedTime.getTime() - startDate.getTime())
-  const day = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - daysBack
+  const startDate = dayjs(new Date('8/26/2022')).add(7, 'hours')
+  const now = dayjs()
+  const day = now.diff(startDate, 'days')
 
-  return shuffleSeed.shuffle(cards, "super_cool_seed")[day]
+  return shuffleSeed.shuffle(cards, "super_cool_seed")[day - daysBack]
 }
 
 enum Region {

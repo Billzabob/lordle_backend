@@ -5,7 +5,7 @@ async function guess(code: string) {
 
   const guess = cards.find(card => card.cardCode === code)
 
-  const card = getCardForDay(new Date(), cards)
+  const card = getCardForDay(cards)
 
   if (guess && card) {
     return {
