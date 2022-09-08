@@ -8,12 +8,15 @@ export async function allCards(patch = 'latest', sets = allSets) {
   return cards.filter(c => c.collectible)
 }
 
-export function getCardForDay(cards: Card[], daysBack = 0) {
+export function currentDay() {
   // Adjust the time so that new cards are released around midnight in the US
   const startDate = dayjs(new Date('8/26/2022')).add(7, 'hours')
   const now = dayjs()
-  const day = now.diff(startDate, 'days')
+  return now.diff(startDate, 'days')
+}
 
+export function getCardForDay(cards: Card[], daysBack = 0) {
+  const day = currentDay()
   return shuffleSeed.shuffle(cards, 'super_cool_seed')[day - daysBack]
 }
 
