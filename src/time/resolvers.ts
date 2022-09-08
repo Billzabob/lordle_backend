@@ -5,6 +5,6 @@ export default {
     nextCardTimeSeconds() {
       const now = dayjs()
       return now.endOf('day').add(7, 'hours').diff(now, 'seconds')
-    }
+    },
   },
 }
