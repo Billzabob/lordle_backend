@@ -4,4 +4,7 @@ export default gql`
   extend type Query {
     correctAnswers(day: Int!): Int!
   }
+  extend type Mutation {
+    incrementCorrectAnswers(day: Int!): Int
+  }
 `

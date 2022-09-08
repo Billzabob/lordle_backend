@@ -53,8 +53,6 @@ export default gql`
     image: String!
   }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each.
   extend type Query {
     guess(code: String!): Guess!
   }

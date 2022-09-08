@@ -14,7 +14,7 @@ export function getCardForDay(cards: Card[], daysBack = 0) {
   const now = dayjs()
   const day = now.diff(startDate, 'days')
 
-  return shuffleSeed.shuffle(cards, "super_cool_seed")[day - daysBack]
+  return shuffleSeed.shuffle(cards, 'super_cool_seed')[day - daysBack]
 }
 
 enum Region {
