@@ -1,4 +1,5 @@
 import { getNumCorrectAnswers, incrementCorrectAnswers } from '../db-client'
+import { currentDay } from '../util'
 
 type DayArg = {
   day: number
@@ -7,12 +8,14 @@ type DayArg = {
 export default {
   Query: {
     async correctAnswers(_parent: undefined, args: DayArg) {
-      return await getNumCorrectAnswers(args.day)
+      const day = args.day === undefined ? currentDay() : args.day
+      return await getNumCorrectAnswers(day)
     }
   },
   Mutation: {
     async incrementCorrectAnswers(_parent: undefined, args: DayArg) {
-      return await incrementCorrectAnswers(args.day)
+      const day = args.day === undefined ? currentDay() : args.day
+      return await incrementCorrectAnswers(day)
     }
   }
 }
