@@ -1,3 +1,4 @@
+import { getCardsForEveryDay, setCards } from '../db-client'
 import { allCards, getCardForDay } from '../util'
 
 // Not sure if this works on the day a new set gets released since it would change the amount of cards
@@ -13,6 +14,11 @@ type CardArgs = {
   daysBack: number
 }
 
+type SetCardArgs = {
+  day: number
+  cards: string[]
+}
+
 export default {
   Query: {
     async cards() {
@@ -23,6 +29,16 @@ export default {
     },
     card(_parent: undefined, args: CardArgs) {
       return pastCard(args.daysBack)
+    },
+    // TODO: Delete this, just to help during development
+    allDays() {
+      return getCardsForEveryDay()
+    }
+  },
+  Mutation: {
+    // TODO: Delete this, just to help during development
+    async setCards(_parent: undefined, args: SetCardArgs) {
+      return setCards(args.day, args.cards)
     }
   },
 }

@@ -9,7 +9,10 @@ import statsTypeDefs from './stats/type-defs'
 import timeResolver from './time/resolvers'
 import timeTypeDefs from './time/type-defs'
 
-const query = gql`type Query`
+const query = gql`
+  type Query
+  type Mutation
+`
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.

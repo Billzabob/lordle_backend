@@ -9,7 +9,7 @@ export default {
   Query: {
     async correctAnswers(_parent: undefined, args: DayArg) {
       const day = args.day === undefined ? currentDay() : args.day
-      return await getNumCorrectAnswers(day)
+      return getNumCorrectAnswers(day)
     }
   }
 }

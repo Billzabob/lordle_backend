@@ -1,26 +1,60 @@
-import { DynamoDBClient, GetItemCommand, GetItemCommandInput, UpdateItemCommand, UpdateItemCommandInput } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, GetItemCommand, GetItemCommandInput, ScanCommand, ScanCommandInput, UpdateItemCommand, UpdateItemCommandInput } from '@aws-sdk/client-dynamodb';
 
 const dbclient = new DynamoDBClient({ region: 'us-west-1' })
 const dailyDataTable = 'DailyData'
 
+export async function getCardsForEveryDay() {
+  const params: ScanCommandInput = {
+    TableName: dailyDataTable,
+    ProjectionExpression: "DayIndex,Cards"
+  }
+  const data = await dbclient.send(new ScanCommand(params))
+  return data?.Items?.map(record => {
+    const cards = record.Cards.SS || []
+    return [record.DayIndex.N?.toString() || "unknownday", ...cards]
+  }) || [[]]
+}
+
+export async function setCards(day: number, cards: string[]) {
+  const params: UpdateItemCommandInput = {
+    TableName: dailyDataTable,
+    Key: { DayIndex: { N: day.toString()}},
+    ExpressionAttributeValues: { ':val': { SS: cards } },
+    UpdateExpression: 'SET Cards = :val',
+    ReturnValues: 'UPDATED_NEW'
+  }
+  const data = await dbclient.send(new UpdateItemCommand(params))
+  return data?.Attributes?.Cards?.SS || []
+}
+
+export async function getCards(day: number) {
+  const params: GetItemCommandInput = {
+    TableName: dailyDataTable,
+    Key: { DayIndex: { N: day.toString() } },
+    ProjectionExpression: 'Cards',
+  }
+  const data = await dbclient.send(new GetItemCommand(params))
+  return data?.Item?.Cards?.SS || []
+}
+
 export async function getNumCorrectAnswers(day: number) {
   const params: GetItemCommandInput = {
     TableName: dailyDataTable,
-    Key: { day: { N: day.toString() } },
+    Key: { DayIndex: { N: day.toString() } },
     ProjectionExpression: 'CorrectAnswers',
   }
   const data = await dbclient.send(new GetItemCommand(params))
-  return data?.Item?.CorrectAnswers?.N || 0
+  return Number(data?.Item?.CorrectAnswers?.N || 0)
 }
 
 export async function incrementCorrectAnswers(day: number) {
   const params: UpdateItemCommandInput = {
     TableName: dailyDataTable,
-    Key: { day: { N: day.toString()}},
+    Key: { DayIndex: { N: day.toString()}},
     ExpressionAttributeValues: { ':val': { N: '1' } },
     UpdateExpression: 'ADD CorrectAnswers :val',
     ReturnValues: 'UPDATED_NEW'
   }
   const data = await dbclient.send(new UpdateItemCommand(params))
-  return data?.Attributes?.CorrectAnswers?.N || 0
+  return Number(data?.Attributes?.CorrectAnswers?.N || 0)
 }

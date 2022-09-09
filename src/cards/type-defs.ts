@@ -51,5 +51,10 @@ export default gql`
   extend type Query {
     cards: [Card!]!
     card(daysBack: Int!): Card!
+    allDays: [[String!]!]!
+  }
+
+  extend type Mutation {
+    setCards(day: Int!, cards: [String!]!): [String!]!
   }
 `
