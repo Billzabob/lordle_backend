@@ -1,4 +1,5 @@
-import { allCards, Card, getCardForDay } from '../util'
+import { incrementCorrectAnswers } from '../db-client'
+import { allCards, Card, currentDay, getCardForDay } from '../util'
 
 async function guess(code: string) {
   const cards = await allCards()
@@ -8,6 +9,8 @@ async function guess(code: string) {
   const card = getCardForDay(cards)
 
   if (guess && card) {
+    if (guess.cardCode === card.cardCode) await incrementCorrectAnswers(currentDay())
+
     return {
       image: guess.assets[0].gameAbsolutePath,
       correct: guess.cardCode === card.cardCode,
