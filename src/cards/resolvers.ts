@@ -1,10 +1,10 @@
-import { allCards, getCardForDay } from '../util'
+import { allCards, getCardsForDay } from '../util'
 
 async function pastCard(daysBack: number) {
   if (Math.abs(daysBack) === 0) return null
 
   const cards = await allCards()
-  return getCardForDay(cards, daysBack)
+  return getCardsForDay(cards, daysBack)
 }
 
 type CardArgs = {
@@ -19,7 +19,7 @@ export default {
         return { ...card, image: card.assets[0].gameAbsolutePath }
       })
     },
-    card(_parent: undefined, args: CardArgs) {
+    cardsForDay(_parent: undefined, args: CardArgs) {
       return pastCard(args.daysBack)
     },
   },

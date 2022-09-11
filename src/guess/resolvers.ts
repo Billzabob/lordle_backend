@@ -1,19 +1,21 @@
 import { incrementCorrectAnswers } from '../db-client'
-import { allCards, Card, currentDay, getCardForDay } from '../util'
+import { allCards, Card, currentDay, getCardsForDay } from '../util'
 
 async function guess(code: string) {
   const cards = await allCards()
 
   const guess = cards.find(card => card.cardCode === code)
 
-  const card = getCardForDay(cards)
+  const todaysCards = await getCardsForDay(cards)
+  const card = todaysCards[0]
 
   if (guess && card) {
-    if (guess.cardCode === card.cardCode) await incrementCorrectAnswers(currentDay())
+    const correct = todaysCards.map(card => card.cardCode).includes(guess.cardCode)
+    if (correct) await incrementCorrectAnswers(currentDay())
 
     return {
       image: guess.assets[0].gameAbsolutePath,
-      correct: guess.cardCode === card.cardCode,
+      correct: correct,
       regionResult: {
         regions: guess.regionRefs,
         result: compareRegions(guess, card)

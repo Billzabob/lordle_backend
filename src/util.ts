@@ -2,7 +2,7 @@ import got from 'got'
 import shuffleSeed from 'shuffle-seed'
 import dayjs  from 'dayjs'
 import _ from 'lodash'
-import { getCardsForEveryDayBefore, setCards } from './db-client'
+import { getCards, getCardsForEveryDayBefore, setCards } from './db-client'
 
 // Use whenever a new set comes out to add it's cards to the possible future cards
 export async function updateCards() {
@@ -38,9 +38,14 @@ export function currentDay() {
   return now.diff(startDate, 'days')
 }
 
-export function getCardForDay(cards: Card[], daysBack = 0) {
+export async function getCardsForDay(cards: Card[], daysBack = 0) {
   const day = currentDay()
-  return shuffleSeed.shuffle(cards, 'super_cool_seed')[day - daysBack]
+  const cardsForDay = await getCards(day - daysBack)
+  return cardsForDay.map(code => {
+    const card = cards.find(c => c.cardCode === code)
+    if (!card) throw 'Card does not exist'
+    return card
+  })
 }
 
 enum Region {
