@@ -51,6 +51,7 @@ export default gql`
     setResult: SetResult!
     correct: Boolean!
     image: String!
+    otherCards: [Card!]!
   }
 
   extend type Query {

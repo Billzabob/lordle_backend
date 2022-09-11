@@ -9,12 +9,18 @@ async function guess(code: string) {
   const todaysCards = await getCardsForDay(cards)
   const card = todaysCards[0]
 
-  if (guess && card) {
-    const correct = todaysCards.map(card => card.cardCode).includes(guess.cardCode)
+  if (guess) {
+    const correct = todaysCards.map(card => card.cardCode).includes(code)
+
     if (correct) await incrementCorrectAnswers(currentDay())
+
+    const otherCards = todaysCards.filter(c => c.cardCode != code).map(card => {
+      return {...card, image: card.assets[0].gameAbsolutePath }
+    })
 
     return {
       image: guess.assets[0].gameAbsolutePath,
+      otherCards: correct ? otherCards : [],
       correct: correct,
       regionResult: {
         regions: guess.regionRefs,
