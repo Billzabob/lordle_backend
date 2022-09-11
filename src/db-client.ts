@@ -3,16 +3,15 @@ import { DynamoDBClient, GetItemCommand, GetItemCommandInput, ScanCommand, ScanC
 const dbclient = new DynamoDBClient({ region: 'us-west-1' })
 const dailyDataTable = 'DailyData'
 
-export async function getCardsForEveryDay() {
+export async function getCardsForEveryDayBefore(day: number) {
   const params: ScanCommandInput = {
     TableName: dailyDataTable,
-    ProjectionExpression: "DayIndex,Cards"
+    ProjectionExpression: 'Cards',
+    ExpressionAttributeValues: { ':today': {N: day.toString()} },
+    FilterExpression: 'DayIndex <= :today'
   }
   const data = await dbclient.send(new ScanCommand(params))
-  return data?.Items?.map(record => {
-    const cards = record.Cards.SS || []
-    return [record.DayIndex.N?.toString() || "unknownday", ...cards]
-  }) || [[]]
+  return data?.Items || []
 }
 
 export async function setCards(day: number, cards: string[]) {

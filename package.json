@@ -16,6 +16,7 @@
     "apollo-server-lambda": "^3.10.2",
     "datejs": "^1.0.0-rc3",
     "graphql": "^16.6.0",
+    "lodash": "^4.17.21",
     "shuffle-seed": "^1.1.6"
   },
   "devDependencies": {
