@@ -44,6 +44,7 @@ export default gql`
   }
 
   type Guess {
+    cardCode: String!
     regionResult: RegionResult!
     rarityResult: RarityResult!
     manaCostResult: ManaCostResult!

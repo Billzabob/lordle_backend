@@ -19,6 +19,7 @@ async function guess(code: string) {
     })
 
     return {
+      cardCode: code,
       image: guess.assets[0].gameAbsolutePath,
       otherCards: correct ? otherCards : null,
       correct: correct,
