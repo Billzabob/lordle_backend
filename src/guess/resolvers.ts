@@ -1,12 +1,15 @@
+import { UserInputError } from 'apollo-server-lambda'
 import { incrementCorrectAnswers } from '../db-client'
 import { allCards, Card, currentDay, getCardsForDay } from '../util'
 
-async function guess(code: string) {
+async function guess(code: string, day: number) {
+  if (day > currentDay()) throw new UserInputError('Cannot guess a future day', { day })
+
   const cards = await allCards()
 
   const guess = cards.find(card => card.cardCode === code)
 
-  const todaysCards = await getCardsForDay(cards)
+  const todaysCards = await getCardsForDay(cards, day)
   const card = todaysCards[0]
 
   if (guess) {
@@ -65,12 +68,13 @@ function compareLists<A>(list1: A[], list2: A[]) {
 
 type GuessArgs = {
   code: string
+  day: number
 }
 
 export default {
   Query: {
     guess(_parent: undefined, args: GuessArgs) {
-      return guess(args.code)
+      return guess(args.code, args.day)
     }
   },
 }

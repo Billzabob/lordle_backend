@@ -56,6 +56,6 @@ export default gql`
   }
 
   extend type Query {
-    guess(code: String!): Guess!
+    guess(code: String!, day: Int!): Guess!
   }
 `

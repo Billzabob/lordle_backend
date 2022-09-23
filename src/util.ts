@@ -38,9 +38,8 @@ export function currentDay() {
   return now.diff(startDate, 'days')
 }
 
-export async function getCardsForDay(cards: Card[], daysBack = 0) {
-  const day = currentDay()
-  const cardsForDay = await getCards(day - daysBack)
+export async function getCardsForDay(cards: Card[], day: number) {
+  const cardsForDay = await getCards(day)
   return cardsForDay.map(code => {
     const card = cards.find(c => c.cardCode === code)
     if (!card) throw 'Card does not exist'
