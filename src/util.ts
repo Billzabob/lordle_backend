@@ -33,7 +33,7 @@ export async function allCards(patch = 'latest', sets = allSets) {
 
 export function currentDay() {
   // Adjust the time so that new cards are released around midnight in the US
-  const startDate = dayjs(new Date('8/26/2022')).add(7, 'hours')
+  const startDate = dayjs(new Date('9/22/2022')).add(7, 'hours')
   const now = dayjs()
   return now.diff(startDate, 'days')
 }
