@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server-lambda'
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+import { ApolloServerPluginLandingPageProductionDefault } from 'apollo-server-core'
 import cardResolver from './cards/resolvers'
 import cardTypeDefs from './cards/type-defs'
 import guessResolver from './guess/resolvers'
@@ -19,7 +19,7 @@ const server = new ApolloServer({
   csrfPrevention: true,
   cache: 'bounded',
   plugins: [
-    ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+    ApolloServerPluginLandingPageProductionDefault(),
   ],
 })
 
