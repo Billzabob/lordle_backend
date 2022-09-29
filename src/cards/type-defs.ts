@@ -51,7 +51,7 @@ export default gql`
 
   extend type Query {
     cards: [Card!]!
-    cardsForDay(daysBack: Int!, currentDay: Int!): [Card!]!
+    cardsForDay(day: Int!): [Card!]!
     allDays: [[String!]!]!
   }
 `

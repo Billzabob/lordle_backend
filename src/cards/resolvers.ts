@@ -1,17 +1,16 @@
 import { UserInputError } from 'apollo-server-lambda'
-import { allCards, getCardsForDay } from '../util'
+import { allCards, currentDay, getCardsForDay } from '../util'
 
-async function pastCard(daysBack: number, currentDay: number) {
-  if (daysBack <= 0) throw new UserInputError('daysBack argument must be greater than zero.', { daysBack })
+async function pastCard(day: number) {
+  const today = currentDay()
+  if (day >= today) throw new UserInputError('day argument must be less than current day.', { day, currentDay })
 
   const cards = await allCards()
-  const day = currentDay - daysBack
   return getCardsForDay(cards, day)
 }
 
 type CardArgs = {
-  daysBack: number
-  currentDay: number
+  day: number
 }
 
 export default {
@@ -23,7 +22,7 @@ export default {
       })
     },
     cardsForDay(_parent: undefined, args: CardArgs) {
-      return pastCard(args.daysBack, args.currentDay)
+      return pastCard(args.day)
     },
   },
 }
