@@ -44,13 +44,14 @@ export default gql`
     name: String!
     regionRefs: [Region!]!
     rarity: Rarity!
-    type: CardType!,
+    type: CardType!
     image: String!
+    backgroundImage: String!
   }
 
   extend type Query {
     cards: [Card!]!
-    cardsForDay(daysBack: Int!): [Card!]!
+    cardsForDay(daysBack: Int!, currentDay: Int!): [Card!]!
     allDays: [[String!]!]!
   }
 `

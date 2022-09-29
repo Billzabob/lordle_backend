@@ -43,7 +43,7 @@ export async function getCardsForDay(cards: Card[], day: number) {
   return cardsForDay.map(code => {
     const card = cards.find(c => c.cardCode === code)
     if (!card) throw 'Card does not exist'
-    return card
+    return { ...card, image: card.assets[0].gameAbsolutePath, backgroundImage: card.assets[0].fullAbsolutePath }
   })
 }
 
