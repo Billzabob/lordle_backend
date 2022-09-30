@@ -47,11 +47,12 @@ export default gql`
     type: CardType!
     image: String!
     backgroundImage: String!
+    language: String!
   }
 
   extend type Query {
-    cards: [Card!]!
-    cardsForDay(day: Int!): [Card!]!
+    cards(language: Language): [Card!]!
+    cardsForDay(day: Int!, language: Language): [Card!]!
     allDays: [[String!]!]!
   }
 `

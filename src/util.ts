@@ -1,7 +1,7 @@
 import got from 'got'
 import shuffleSeed from 'shuffle-seed'
-import dayjs  from 'dayjs'
-import _ from 'lodash'
+import dayjs from 'dayjs'
+import { groupBy } from 'lodash'
 import { getCards, getCardsForEveryDayBefore, setCards } from './db-client'
 
 // Use whenever a new set comes out to add it's cards to the possible future cards
@@ -10,7 +10,7 @@ export async function updateCards() {
   if (!seed) throw 'No seed set'
   const today = currentDay()
   const cards = await allCards()
-  const groups = _.groupBy(cards, c => c.set + c.cost + c.rarity + c.type + c.regionRefs.sort().join())
+  const groups = groupBy(cards, c => c.set + c.cost + c.rarity + c.type + c.regionRefs.sort().join())
   const previousCardGroups = await getCardsForEveryDayBefore(today)
   const previousCards = previousCardGroups.flatMap(record => record.Cards.SS)
   const filtered = Object.values(groups).filter(group => !group.map(c => c.cardCode).some(code => previousCards.includes(code)))
@@ -25,10 +25,14 @@ export async function updateCards() {
   return updates.length
 }
 
-export async function allCards(patch = 'latest', sets = allSets) {
-  const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
+export async function allCards(language = 'en_us', patch = 'latest', sets = allSets) {
+  const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/${language}/data/${set}-${language}.json`).json())
+  const allCardsEnglish = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
+  const englishCards = (await Promise.all(allCardsEnglish)).flat() as Card[]
   const cards = (await Promise.all(allCards)).flat() as Card[]
-  return cards.filter(c => c.collectible)
+  const grouped = groupBy([...englishCards, ...cards], c => c.cardCode)
+  const cardsWithLanguage = Object.values(grouped).map(([en, c]) => ({ ...en, name: c.name, assets: c.assets, language: language } as Card))
+  return cardsWithLanguage.filter(c => c.collectible)
 }
 
 export function currentDay() {
@@ -90,6 +94,7 @@ export type Card = {
   set: Set
   collectible: boolean
   assets: Asset[]
+  language: string
 }
 
 enum Set {
