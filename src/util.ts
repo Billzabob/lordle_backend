@@ -25,7 +25,7 @@ export async function updateCards() {
   return updates.length
 }
 
-export async function allCards(language = 'en_us', patch = 'latest', sets = allSets) {
+export async function allCards(language = 'en_us', patch = '3_16_0', sets = allSets) {
   const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/${language}/data/${set}-${language}.json`).json())
   const allCardsEnglish = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
   const englishCards = (await Promise.all(allCardsEnglish)).flat() as Card[]
