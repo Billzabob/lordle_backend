@@ -26,6 +26,29 @@ export async function setCards(day: number, cards: string[]) {
   return data?.Attributes?.Cards?.SS || []
 }
 
+export async function getVoiceCardsForEveryDayBefore(day: number) {
+  const params: ScanCommandInput = {
+    TableName: dailyDataTable,
+    ProjectionExpression: 'VoiceCard',
+    ExpressionAttributeValues: { ':today': {N: day.toString()} },
+    FilterExpression: 'DayIndex <= :today'
+  }
+  const data = await dbclient.send(new ScanCommand(params))
+  return data?.Items?.map(r => r?.VoiceCards?.S).filter(c => c) || []
+}
+
+export async function setVoiceCard(day: number, card: string) {
+  const params: UpdateItemCommandInput = {
+    TableName: dailyDataTable,
+    Key: { DayIndex: { N: day.toString()}},
+    ExpressionAttributeValues: { ':val': { S: card } },
+    UpdateExpression: 'SET VoiceCard = :val',
+    ReturnValues: 'UPDATED_NEW'
+  }
+  const data = await dbclient.send(new UpdateItemCommand(params))
+  return data?.Attributes?.VoiceCard?.S
+}
+
 export async function getCards(day: number) {
   const params: GetItemCommandInput = {
     TableName: dailyDataTable,

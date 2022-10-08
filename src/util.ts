@@ -1,8 +1,9 @@
+import dayjs from 'dayjs'
+import fs from 'fs'
 import got from 'got'
 import shuffleSeed from 'shuffle-seed'
-import dayjs from 'dayjs'
+import { getCards, getCardsForEveryDayBefore, getVoiceCardsForEveryDayBefore, setCards, setVoiceCard } from './db-client'
 import { groupBy } from 'lodash'
-import { getCards, getCardsForEveryDayBefore, setCards } from './db-client'
 
 // Use whenever a new set comes out to add it's cards to the possible future cards
 export async function updateCards() {
@@ -19,6 +20,26 @@ export async function updateCards() {
   const result = shuffled.map((group, i) => {
     const codes = group.map(c => c.cardCode).sort()
     return setCards(today + i + 1, codes)
+  })
+
+  const updates = await Promise.all(result)
+  return updates.length
+}
+
+// Use whenever a new set comes out to add it's cards to the possible future cards
+export async function updateVoiceCards() {
+  const seed = process.env.SEED
+  if (!seed) throw 'No seed set'
+  const today = currentDay()
+  const cardsAll = await allCards()
+  const cards = fs.readFileSync('voice_cards.txt').toString().split('\n')
+  const previousCards = await getVoiceCardsForEveryDayBefore(today)
+  const filtered = cards.filter(c => !previousCards.includes(c)).filter(c => cardsAll.find(a => a.cardCode === c)?.collectible)
+  const shuffled = shuffleSeed.shuffle(filtered, seed)
+
+  const result = shuffled.map((card, i) => {
+    console.log(`Setting voice card for ${today + i + 1} to ${card}`)
+    setVoiceCard(today + i + 1, card)
   })
 
   const updates = await Promise.all(result)
