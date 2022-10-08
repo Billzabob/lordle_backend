@@ -1,5 +1,5 @@
 import { UserInputError } from 'apollo-server-lambda'
-import { getVoiceCard } from '../db-client'
+import { getVoiceCard, incrementCorrectVoiceAnswers } from '../db-client'
 import { getVoiceLinesForCard } from '../s3-client'
 import { allCards, currentDay } from '../util'
 
@@ -17,11 +17,14 @@ async function guessVoice(code: string, day: number, language?: string) {
   const cards = await allCards(language)
   const card = cards.find(c => c.cardCode === code)
 
+  const correct = code === cardCode
+  if (correct) await incrementCorrectVoiceAnswers(day)
+
   if (!card) throw 'Card code does not exist'
 
   return {
     cardCode: code,
-    correct: code === cardCode,
+    correct: correct,
     image: card.assets[0].gameAbsolutePath,
     name: card.name,
     language: card.language
