@@ -12,45 +12,43 @@ async function guess(code: string, day: number, language?: string) {
   const todaysCards = await getCardsForDay(cards, day)
   const card = todaysCards[0]
 
-  if (guess) {
-    const correct = todaysCards.map(card => card.cardCode).includes(code)
+  if (!guess) throw 'Card code does not exist'
 
-    if (correct) await incrementCorrectAnswers(currentDay())
+  const correct = todaysCards.map(card => card.cardCode).includes(code)
 
-    const otherCards = todaysCards.filter(c => c.cardCode != code).map(card => {
-      return {...card, image: card.assets[0].gameAbsolutePath }
-    })
+  if (correct) await incrementCorrectAnswers(currentDay())
 
-    return {
-      name: guess.name,
-      cardCode: code,
-      language: guess.language,
-      image: guess.assets[0].gameAbsolutePath,
-      otherCards: correct ? otherCards : null,
-      correct: correct,
-      regionResult: {
-        regions: guess.regionRefs,
-        result: compareRegions(guess, card)
-      },
-      rarityResult: {
-        rarity: guess.rarity,
-        result: guess.rarity === card.rarity ? 'CORRECT' : 'WRONG',
-      },
-      manaCostResult: {
-        manaCost: guess.cost,
-        result: guess.cost > card.cost ? 'DOWN' : (guess.cost < card.cost ? 'UP' : 'CORRECT'),
-      },
-      typeResult: {
-        type: guess.type,
-        result: guess.type === card.type ? 'CORRECT' : 'WRONG',
-      },
-      setResult: {
-        set: guess.set,
-        result: guess.set === card.set ? 'CORRECT' : 'WRONG',
-      }
+  const otherCards = todaysCards.filter(c => c.cardCode != code).map(card => {
+    return {...card, image: card.assets[0].gameAbsolutePath }
+  })
+
+  return {
+    name: guess.name,
+    cardCode: code,
+    language: guess.language,
+    image: guess.assets[0].gameAbsolutePath,
+    otherCards: correct ? otherCards : null,
+    correct: correct,
+    regionResult: {
+      regions: guess.regionRefs,
+      result: compareRegions(guess, card)
+    },
+    rarityResult: {
+      rarity: guess.rarity,
+      result: guess.rarity === card.rarity ? 'CORRECT' : 'WRONG',
+    },
+    manaCostResult: {
+      manaCost: guess.cost,
+      result: guess.cost > card.cost ? 'DOWN' : (guess.cost < card.cost ? 'UP' : 'CORRECT'),
+    },
+    typeResult: {
+      type: guess.type,
+      result: guess.type === card.type ? 'CORRECT' : 'WRONG',
+    },
+    setResult: {
+      set: guess.set,
+      result: guess.set === card.set ? 'CORRECT' : 'WRONG',
     }
-  } else {
-    throw 'Card code does not exist'
   }
 }
 

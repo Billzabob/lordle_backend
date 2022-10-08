@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.165.0",
+    "@aws-sdk/client-s3": "^3.186.0",
     "apollo-server-lambda": "^3.10.2",
     "datejs": "^1.0.0-rc3",
     "graphql": "^16.6.0",

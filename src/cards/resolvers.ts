@@ -3,7 +3,7 @@ import { allCards, currentDay, getCardsForDay } from '../util'
 
 async function pastCard(day: number, language?: string) {
   const today = currentDay()
-  if (day >= today) throw new UserInputError('day argument must be less than current day.', { day, currentDay })
+  if (day >= today) throw new UserInputError('day argument must be less than current day.', { day, today })
 
   const cards = await allCards(language)
   return getCardsForDay(cards, day)

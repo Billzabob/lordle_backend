@@ -1,4 +1,12 @@
-import { DynamoDBClient, GetItemCommand, GetItemCommandInput, ScanCommand, ScanCommandInput, UpdateItemCommand, UpdateItemCommandInput } from '@aws-sdk/client-dynamodb';
+import {
+  DynamoDBClient,
+  GetItemCommand,
+  GetItemCommandInput,
+  ScanCommand,
+  ScanCommandInput,
+  UpdateItemCommand,
+  UpdateItemCommandInput
+} from '@aws-sdk/client-dynamodb'
 
 const dbclient = new DynamoDBClient({ region: 'us-west-1' })
 const dailyDataTable = 'DailyData'
@@ -59,6 +67,16 @@ export async function getCards(day: number) {
   return data?.Item?.Cards?.SS || []
 }
 
+export async function getVoiceCard(day: number) {
+  const params: GetItemCommandInput = {
+    TableName: dailyDataTable,
+    Key: { DayIndex: { N: day.toString() } },
+    ProjectionExpression: 'VoiceCard',
+  }
+  const data = await dbclient.send(new GetItemCommand(params))
+  return data?.Item?.VoiceCard?.S || ''
+}
+
 export async function getNumCorrectAnswers(day: number) {
   const params: GetItemCommandInput = {
     TableName: dailyDataTable,
@@ -79,4 +97,26 @@ export async function incrementCorrectAnswers(day: number) {
   }
   const data = await dbclient.send(new UpdateItemCommand(params))
   return Number(data?.Attributes?.CorrectAnswers?.N || 0)
+}
+
+export async function getNumCorrectVoiceAnswers(day: number) {
+  const params: GetItemCommandInput = {
+    TableName: dailyDataTable,
+    Key: { DayIndex: { N: day.toString() } },
+    ProjectionExpression: 'CorrectVoiceAnswers',
+  }
+  const data = await dbclient.send(new GetItemCommand(params))
+  return Number(data?.Item?.CorrectVoiceAnswers?.N || 0)
+}
+
+export async function incrementCorrectVoiceAnswers(day: number) {
+  const params: UpdateItemCommandInput = {
+    TableName: dailyDataTable,
+    Key: { DayIndex: { N: day.toString()}},
+    ExpressionAttributeValues: { ':val': { N: '1' } },
+    UpdateExpression: 'ADD CorrectVoiceAnswers :val',
+    ReturnValues: 'UPDATED_NEW'
+  }
+  const data = await dbclient.send(new UpdateItemCommand(params))
+  return Number(data?.Attributes?.CorrectVoiceAnswers?.N || 0)
 }
