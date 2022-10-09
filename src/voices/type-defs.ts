@@ -12,5 +12,6 @@ export default gql`
   extend type Query {
     voiceLines(day: Int!): [String!]!
     guessVoice(day: Int!, code: String!, language: Language): VoiceGuess!
+    voiceCardsForDay(day: Int!, language: Language): [Card!]!
   }
 `

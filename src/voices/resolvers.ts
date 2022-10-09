@@ -31,6 +31,17 @@ async function guessVoice(code: string, day: number, language?: string) {
   }
 }
 
+async function pastCard(day: number, language?: string) {
+  const today = currentDay()
+  if (day >= today) throw new UserInputError('day argument must be less than current day.', { day, today })
+
+  const cards = await allCards(language)
+  const cardCode = await getVoiceCard(day)
+  const card =  cards.find(c => c.cardCode === cardCode)
+  if (!card) throw 'Card does not exist'
+  return { ...card, image: card.assets[0].gameAbsolutePath, backgroundImage: card.assets[0].fullAbsolutePath }
+}
+
 type VoiceLineArgs = {
   day: number
 }
@@ -41,6 +52,11 @@ type VoiceGuessArgs = {
   language?: string
 }
 
+type VoiceArgs = {
+  day: number
+  language?: string
+}
+
 export default {
   Query: {
     async voiceLines(_parent: undefined, args: VoiceLineArgs) {
@@ -48,6 +64,10 @@ export default {
     },
     async guessVoice(_parent: undefined, args: VoiceGuessArgs) {
       return guessVoice(args.code, args.day, args.language)
-    }
+    },
+    voiceCardsForDay(_parent: undefined, args: VoiceArgs) {
+      const card = pastCard(args.day, args.language)
+      return [card]
+    },
   },
 }
