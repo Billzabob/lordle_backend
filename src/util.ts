@@ -1,7 +1,9 @@
 import dayjs from 'dayjs'
 import fs from 'fs'
 import got from 'got'
+import https from 'https'
 import shuffleSeed from 'shuffle-seed'
+import { exec } from 'child_process'
 import { getCards, getCardsForEveryDayBefore, getVoiceCardsForEveryDayBefore, setCards, setVoiceCard } from './db-client'
 import { groupBy } from 'lodash'
 
@@ -44,6 +46,33 @@ export async function updateVoiceCards() {
 
   const updates = await Promise.all(result)
   return updates.length
+}
+
+export async function backgroundToWebp() {
+  const cards = await allCards('en_us', '3_16_0', ['set6cde'])
+  console.log(cards.length)
+  const foo = cards.map(async c => {
+    await downloadImage(c.assets[0].fullAbsolutePath.replace('http', 'https'), `pngs/${c.cardCode}.png`)
+    return exec(`cwebp 'pngs/${c.cardCode}.png' -o webps/${c.cardCode}.webp`)
+  })
+
+  return foo
+}
+
+function downloadImage(url: string, filepath: string) {
+  return new Promise((resolve, reject) => {
+      https.get(url, (res) => {
+          if (res.statusCode === 200) {
+              res.pipe(fs.createWriteStream(filepath))
+                  .on('error', reject)
+                  .once('close', () => resolve(filepath))
+          } else {
+              res.resume()
+              reject(new Error(`Request Failed With a Status Code: ${res.statusCode}`))
+
+          }
+      })
+  })
 }
 
 export async function allCards(language = 'en_us', patch = '3_16_0', sets = allSets) {
