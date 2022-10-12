@@ -9,7 +9,11 @@ async function getVoiceLines(day: number) {
 
   const card = await getVoiceCard(day)
   const lines = await getVoiceLinesForCard(card)
-  return lines.filter(line => !line.includes('interaction')).filter(line => !line.includes('spell_resolve'))
+  const filtered = lines.filter(line => !line.includes('interaction')).filter(line => !line.includes('spell_resolve'))
+  const summon = filtered.filter(line => line.includes('summon'))
+  const notSummon = filtered.filter(line => !line.includes('summon'))
+  // Put summon first
+  return [...summon, ...notSummon]
 }
 
 async function guessVoice(code: string, day: number, language?: string) {
