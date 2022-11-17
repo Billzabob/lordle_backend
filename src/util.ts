@@ -49,7 +49,7 @@ export async function updateVoiceCards() {
 }
 
 export async function backgroundToWebp() {
-  const cards = await allCards('en_us', '3_17_0', ['set6cde'])
+  const cards = await allCards('en_us', '3_19_0', ['set6cde'])
   console.log(cards.length)
   const foo = cards.map(async c => {
     await downloadImage(c.assets[0].fullAbsolutePath.replace('http', 'https'), `pngs/${c.cardCode}.png`)
@@ -75,7 +75,7 @@ function downloadImage(url: string, filepath: string) {
   })
 }
 
-export async function allCards(language = 'en_us', patch = '3_17_0', sets = allSets) {
+export async function allCards(language = 'en_us', patch = '3_19_0', sets = allSets) {
   const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/${language}/data/${set}-${language}.json`).json())
   const allCardsEnglish = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
   const englishCards = (await Promise.all(allCardsEnglish)).flat() as Card[]
