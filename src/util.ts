@@ -50,8 +50,10 @@ export async function updateVoiceCards() {
 
 export async function backgroundToWebp() {
   const cards = await allCards('en_us', '3_19_0', ['set6cde'])
-  console.log(cards.length)
-  const foo = cards.map(async c => {
+  const existingCards = await allCards('en_us', '3_16_0', ['set6cde'])
+  const blah = cards.filter(c => !existingCards.includes(c))
+  console.log(blah.length)
+  const foo = blah.map(async c => {
     await downloadImage(c.assets[0].fullAbsolutePath.replace('http', 'https'), `pngs/${c.cardCode}.png`)
     return exec(`cwebp 'pngs/${c.cardCode}.png' -o webps/${c.cardCode}.webp`)
   })
