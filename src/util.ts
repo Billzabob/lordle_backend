@@ -49,8 +49,8 @@ export async function updateVoiceCards() {
 }
 
 export async function backgroundToWebp() {
-  const cards = await allCards('en_us', '4_2_0', ['set6cde'])
-  const existingCards = await allCards('en_us', '4_1_0', ['set6cde'])
+  const cards = await allCards('en_us', '4_3_0', ['set7'])
+  const existingCards = await allCards('en_us', '4_2_0', ['set7'])
   const blah = cards.filter(c => !existingCards.includes(c))
   console.log(blah.length)
   const foo = blah.map(async c => {
@@ -77,7 +77,7 @@ function downloadImage(url: string, filepath: string) {
   })
 }
 
-export async function allCards(language = 'en_us', patch = '4_2_0', sets = allSets) {
+export async function allCards(language = 'en_us', patch = '4_3_0', sets = allSets) {
   const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/${language}/data/${set}-${language}.json`).json())
   const allCardsEnglish = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
   const englishCards = (await Promise.all(allCardsEnglish)).flat() as Card[]
@@ -156,7 +156,8 @@ enum Set {
   Set4 = 'Set4',
   Set5 = 'Set5',
   Set6 = 'Set6',
-  Set6cde = 'Set6cde'
+  Set6cde = 'Set6cde',
+  Set7 = 'Set7'
 }
 
 const allSets = Object.values(Set).map(set => set.toLowerCase())
