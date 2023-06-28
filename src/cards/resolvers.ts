@@ -1,5 +1,5 @@
 import { UserInputError } from 'apollo-server-lambda'
-import { allCards, backgroundToWebp, currentDay, getCardsForDay } from '../util'
+import { allCards, currentDay, getCardsForDay } from '../util'
 
 async function pastCard(day: number, language?: string) {
   const today = currentDay()
