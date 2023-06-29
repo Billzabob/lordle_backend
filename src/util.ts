@@ -149,7 +149,7 @@ export type Card = {
   language: string
 }
 
-enum Set {
+export enum Set {
   Set1 = 'Set1',
   Set2 = 'Set2',
   Set3 = 'Set3',

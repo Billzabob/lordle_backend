@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-lambda'
 import { incrementCorrectAnswers } from '../db-client'
-import { allCards, Card, currentDay, getCardsForDay } from '../util'
+import { allCards, Card, currentDay, getCardsForDay, Set } from '../util'
 
 async function guess(code: string, day: number, language?: string) {
   if (day > currentDay()) throw new UserInputError('Cannot guess a future day', { day })
@@ -47,8 +47,20 @@ async function guess(code: string, day: number, language?: string) {
     },
     setResult: {
       set: guess.set,
-      result: guess.set === card.set ? 'CORRECT' : 'WRONG',
+      result: compareSets(guess, card)
     }
+  }
+}
+
+function compareSets(guess: Card, card: Card) {
+  if (guess.set === card.set) {
+    return 'CORRECT'
+  } else if (guess.set === Set.Set7 && card.set === Set.Set7b) {
+    return 'CORRECT'
+  } else if (guess.set === Set.Set7b && card.set === Set.Set7) {
+    return 'CORRECT'
+  } else {
+    return 'WRONG'
   }
 }
 
