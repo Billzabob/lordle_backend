@@ -39,6 +39,7 @@ export default gql`
     Set6cde
     Set7
     Set7b
+    Set8
   }
 
   type Card {
