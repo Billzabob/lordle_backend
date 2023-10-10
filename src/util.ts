@@ -49,9 +49,9 @@ export async function updateVoiceCards() {
 }
 
 export async function backgroundToWebp() {
-  const cards = await allCards('en_us', '4_9_0', ['set8'])
-  const existingCards = await allCards('en_us', '4_8_0', ['set7b'])
-  const blah = cards.filter(c => !existingCards.includes(c))
+  const cards = await allCards('en_us', '4_9_0')
+  const existingCards = await allCards('en_us', '4_8_0', allSets.filter(s => s !== 'set8'))
+  const blah = cards.filter(c => !existingCards.map(a => a.cardCode).includes(c.cardCode))
   console.log(blah.length)
   const foo = blah.map(async c => {
     await downloadImage(c.assets[0].fullAbsolutePath.replace('http', 'https'), `pngs/${c.cardCode}.png`)
@@ -77,7 +77,7 @@ function downloadImage(url: string, filepath: string) {
   })
 }
 
-export async function allCards(language = 'en_us', patch = '4_9_0', sets = allSets) {
+export async function allCards(language = 'en_us', patch = '4_10_0', sets = allSets) {
   const allCards = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/${language}/data/${set}-${language}.json`).json())
   const allCardsEnglish = sets.map(set => got(`http://dd.b.pvp.net/${patch}/${set}/en_us/data/${set}-en_us.json`).json())
   const englishCards = (await Promise.all(allCardsEnglish)).flat() as Card[]
