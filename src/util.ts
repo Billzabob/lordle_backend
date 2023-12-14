@@ -87,6 +87,34 @@ export async function allCards(language = 'en_us', patch = '4_12_0', sets = allS
   return cardsWithLanguage.filter(c => c.collectible)
 }
 
+export async function regionPairs() {
+  const cards = await allCards()
+  const multiRegionCards = cards.filter(c => c.regionRefs.length > 1)
+  const pairs = multiRegionCards.map(c => c.regionRefs.sort().join(''))
+  const set = [...new Set(pairs)]
+  return set.filter(s => !knownSets.includes(s))
+}
+
+const knownSets = [
+  'BandleCityBilgewater',
+  'BandleCityIonia',
+  'BandleCityDemacia',
+  'BandleCityFreljord',
+  'BandleCityNoxus',
+  'BandleCityPiltoverZaun',
+  'BandleCityShadowIsles',
+  'BandleCityTargon',
+  'BandleCityShurima',
+  'BilgewaterPiltoverZaun',
+  'DemaciaFreljord',
+  'DemaciaTargon',
+  'IoniaNoxus',
+  'NoxusShadowIsles',
+  'ShadowIslesShurima',
+  'ShadowIslesTargon',
+  'NoxusShurima' 
+]
+
 export function currentDay() {
   // Adjust the time so that new cards are released around midnight in the US
   const startDate = dayjs(new Date('9/28/2022')).add(7, 'hours')
@@ -143,13 +171,13 @@ export type Card = {
   regionRefs: Region[]
   rarity: Rarity
   type: CardType
-  set: Set
+  set: CardSet
   collectible: boolean
   assets: Asset[]
   language: string
 }
 
-export enum Set {
+export enum CardSet {
   Set1 = 'Set1',
   Set2 = 'Set2',
   Set3 = 'Set3',
@@ -162,4 +190,4 @@ export enum Set {
   Set8 = 'Set8',
 }
 
-const allSets = Object.values(Set).map(set => set.toLowerCase())
+const allSets = Object.values(CardSet).map(set => set.toLowerCase())
