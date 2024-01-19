@@ -68,9 +68,11 @@ export async function getCards(day: number) {
 }
 
 export async function getVoiceCard(day: number) {
+  const d = day % 635
+  const adjusted  = d < 10 ? d + 300 : d
   const params: GetItemCommandInput = {
     TableName: dailyDataTable,
-    Key: { DayIndex: { N: day.toString() } },
+    Key: { DayIndex: { N: adjusted.toString() } },
     ProjectionExpression: 'VoiceCard',
   }
   const data = await dbclient.send(new GetItemCommand(params))
